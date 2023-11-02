@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "ostream": "cpp",
+        "thread": "cpp",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "ranges": "cpp",
+        "mstd_iterator": "cpp",
+        "mstd_atomic": "cpp",
+        "*.tcc": "cpp",
+        "chrono": "cpp",
+        "vector": "cpp",
+        "random": "cpp",
+        "numeric": "cpp"
+    },
+    "C_Cpp.intelliSenseEngine": "Tag Parser",
+    "git.ignoreLimitWarning": true
+}

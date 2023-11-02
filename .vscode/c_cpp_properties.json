@@ -8,7 +8,6 @@
                 "${workspaceFolder}/Robohan-lib/include",
                 "${workspaceFolder}/Robohan-lib/include/BoardModule",
                 "${workspaceFolder}/Robohan-lib/include/RANModule",
-                "${workspaceFolder}/Robot",
                 "${workspaceFolder}/mbed-os",
                 "${workspaceFolder}/mbed-os/cmsis",
                 "${workspaceFolder}/mbed-os/cmsis/CMSIS_5",
