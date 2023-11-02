@@ -12,10 +12,10 @@ PwmOut rightBack(PB_0);
 PwmOut leftForward(PF_0);
 PwmOut leftBack(PA_11);
 //フォトダイオード
-AnalogIn right(PA_0);
-AnalogIn midRight(PA_1);
-AnalogIn midLeft(PA_3);
-AnalogIn left(PA_4);
+AnalogIn right_sensor(PA_0);
+AnalogIn midRight_sensor(PA_1);
+AnalogIn midLeft_sensor(PA_3);
+AnalogIn left_sensor(PA_4);
 
 //変数定義
 const int sensor_Num = 4;
@@ -33,10 +33,10 @@ const float Kd2 = 0.0f;
 float Totals[sensor_Num];
 float Prevs[sensor_Num];
 float Sensor_Calc(float,float,float,float,float,float);
-void MotorMotion(float,float);
+void MotorMotion(float,float,float);
 float Right;
 float Left;
-const float motorSpeed;
+const float motorSpeed = 0.3f;
 
 int main()
 {
@@ -48,17 +48,17 @@ int main()
     leftForward.period_us(50);
     leftBack.period_us(50);
     while(1){
-        sensors[0] = right.read();
-        sensors[1] = midRight.read();
-        sensors[2] = midLeft.read();
-        sensors[3] = left.read();
+        sensors[0] = right_sensor.read();
+        sensors[1] = midRight_sensor.read();
+        sensors[2] = midLeft_sensor.read();
+        sensors[3] = left_sensor.read();
         for(int i;i <= sensor_Num;i++){
             sensors[i] -= zeros[i];//閾値からのずれを計算
             Totals[i] += sensors[i];//ずれの合計値計算
         }
         Right = Sensor_Calc(sensors[1],sensors[0],Totals[1],Totals[0],Prevs[1],Prevs[0]);
-        Left = Sensor_Calc(sensors[3],sensors[4],Totals[3],Total[4],Prevs[3],Prevs[4]);
-        MotorMotion(Right,Left);
+        Left = Sensor_Calc(sensors[2],sensors[3],Totals[2],Totals[3],Prevs[2],Prevs[3]);
+        MotorMotion(Right,Left,motorSpeed);
         //Prevsの値を設定
         for(int i;i <= sensor_Num;i++){
             Prevs[i] = sensors[i];
@@ -70,10 +70,10 @@ float Sensor_Calc(float mid,float edge,float midTotal,float edgeTotal,float midP
     float p = mid*Kp1 + edge*Kp2;
     float i = midTotal*Ki1 + edgeTotal*Ki2;
     float d = (mid-midPrev)*Kd1 + (edge-edgePrev)*Kd2;
-    return (p+i+d)
+    return (p+i+d);
 }
 
-void MotorMotion(float Sensor_Right,float Sensor_Left){
+void MotorMotion(float Sensor_Right,float Sensor_Left,float motorSpeed){
     rightForward = motorSpeed - Sensor_Right;
     leftForward = motorSpeed - Sensor_Left;
 }
