@@ -52,16 +52,16 @@ int main()
         sensors[1] = midRight_sensor.read();
         sensors[2] = midLeft_sensor.read();
         sensors[3] = left_sensor.read();
-        printf("センサーの取得値:%f",sensors);
         for(int i;i <= sensor_Num;i++){
+            printf("%dのセンサーの取得値:%f",i,sensors[i]);
             sensors[i] -= zeros[i];//閾値からのずれを計算
+            printf("%dのセンサー値ズレ調整後%f",i,sensors[i]);
             Totals[i] += sensors[i];//ずれの合計値計算
         }
-        printf("ズレ調整後:%f",sensors);
         Right = Sensor_Calc(sensors[1],sensors[0],Totals[1],Totals[0],Prevs[1],Prevs[0]);
-        print("Right:%d",Right);
+        printf("Right:%f",Right);
         Left = Sensor_Calc(sensors[2],sensors[3],Totals[2],Totals[3],Prevs[2],Prevs[3]);
-        print("Left:%d",Left);
+        printf("Left:%f",Left);
         MotorMotion(Right,Left,motorSpeed);
         //Prevsの値を設定
         for(int i;i <= sensor_Num;i++){
