@@ -21,7 +21,7 @@ AnalogIn left_sensor(PA_4);
 const int sensor_Num = 4;
 float sensors[sensor_Num];
 //各フォトダイオードの閾値
-const float zeros[sensor_Num] = {0.0f,0.0f,0.0f,0.0f};
+const float zeros[sensor_Num] = {0.0021f,0.0019f,0.017f,0.0034f};
 //PIDの定数
 const float Kp1 = 0.0f;
 const float Kp2 = 0.0f;
@@ -34,8 +34,8 @@ float Totals[sensor_Num];
 float Prevs[sensor_Num];
 float Sensor_Calc(float,float,float,float,float,float);
 void MotorMotion(float,float,float);
-float Right;
-float Left;
+float RightSensor;
+float LeftSensor;
 const float motorSpeed = 0.3f;
 
 int main()
@@ -52,17 +52,17 @@ int main()
         sensors[1] = midRight_sensor.read();
         sensors[2] = midLeft_sensor.read();
         sensors[3] = left_sensor.read();
-        for(int i;i <= sensor_Num;i++){
-            printf("%dのセンサーの取得値:%f",i,sensors[i]);
-            sensors[i] -= zeros[i];//閾値からのずれを計算
-            printf("%dのセンサー値ズレ調整後%f",i,sensors[i]);
-            Totals[i] += sensors[i];//ずれの合計値計算
+        for(int kaisuu = 0;kaisuu < sensor_Num;kaisuu++){
+            printf("%dのセンサーの取得値:%f",kaisuu,sensors[kaisuu]);
+            sensors[kaisuu] -= zeros[kaisuu];//閾値からのずれを計算
+            printf("%dのセンサー値ズレ調整後%f",kaisuu,sensors[kaisuu]);
+            Totals[kaisuu] += sensors[kaisuu];//ずれの合計値計算
         }
-        Right = Sensor_Calc(sensors[1],sensors[0],Totals[1],Totals[0],Prevs[1],Prevs[0]);
-        printf("Right:%f",Right);
-        Left = Sensor_Calc(sensors[2],sensors[3],Totals[2],Totals[3],Prevs[2],Prevs[3]);
-        printf("Left:%f",Left);
-        MotorMotion(Right,Left,motorSpeed);
+        RightSensor = Sensor_Calc(sensors[1],sensors[0],Totals[1],Totals[0],Prevs[1],Prevs[0]);
+        printf("Right:%f",RightSensor);
+        LeftSensor = Sensor_Calc(sensors[2],sensors[3],Totals[2],Totals[3],Prevs[2],Prevs[3]);
+        printf("Left:%f",LeftSensor);
+        MotorMotion(RightSensor,LeftSensor,motorSpeed);
         //Prevsの値を設定
         for(int i;i <= sensor_Num;i++){
             Prevs[i] = sensors[i];
