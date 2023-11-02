@@ -74,6 +74,14 @@ float Sensor_Calc(float mid,float edge,float midTotal,float edgeTotal,float midP
 }
 
 void MotorMotion(float Sensor_Right,float Sensor_Left,float motorSpeed){
-    rightForward = motorSpeed - Sensor_Right;
-    leftForward = motorSpeed - Sensor_Left;
+    if(motorSpeed<Sensor_Right){
+        printf("error");
+    }
+    else if(motorSpeed<Sensor_Left){
+        printf("error");
+    }
+    else{
+        rightForward = motorSpeed - Sensor_Right;
+        leftForward = motorSpeed - Sensor_Left;
+    }
 }
